@@ -1,0 +1,2 @@
+buffer int BIOSOutputCommandUnknown 18;
+[10, 'U', 'n', 'k', 'n', 'o', 'w', 'n', ' ', 'C', 'o', 'm', 'm', 'a', 'n', 'd', '.', 10] BIOSOutputCommandUnknown;

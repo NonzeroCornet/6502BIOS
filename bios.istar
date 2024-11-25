@@ -1,0 +1,53 @@
+$8000;
+$0000-$3fff;
+
+insert libs/IOLIBS.istar;
+
+buffer int BIOSKeyboardReadIn 10;
+int BIOSKeyboardReadInLength = 0;
+
+# List of command outputs
+insert commonStrings.istar
+
+IOWRITEIN = '>';
+call IOWRITE;
+
+routine 
+
+routine BIOSMainRoutine {
+  call IOREAD;
+
+  if IOREADOUT != '' {
+    if IOREADOUT = 8 {
+      # If the user hit backspace, write a delete to screen and delete one character from the keyboard read in buffer
+      if BIOSKeyboardReadInLength > 0 {
+        BIOSKeyboardReadInLength - 1;
+        BIOSKeyboardReadIn[BIOSKeyboardReadInLength] = '';
+        IOWRITEIN = 8;
+        call IOWRITE;
+      }
+    }
+    if IOREADOUT = 15 {
+      # When the user hits enter. Normally we would check to see if the commad exists, but no commands exist yet lol so I'll just output Unknown Command.
+      int BIOSOutputRoutineCharacterCounter = 18;
+      insert biosCommands.istar
+      call BIOSOutputRoutineCommandUnknown
+      IOWRITEIN = '>';
+      call IOWRITE;
+    }
+    if IOREADOUT != 8 {
+      if BIOSKeyboardReadInLength < 10 {
+        # Everything else, just repeat the typed information to the screen.
+        BIOSKeyboardReadIn[BIOSKeyboardReadInLength] = IOREADOUT;
+        IOWRITEIN = IOREADOUT;
+        BIOSKeyboardReadInLength + 1;
+        call IOWRITE;
+      }
+    }
+    IOREADOUT = '';
+  }
+
+  call BIOSMainRoutine;
+}
+
+call BIOSMainRoutine;

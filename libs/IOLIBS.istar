@@ -1,0 +1,19 @@
++LDA %10000000
++STA 05DE
++LDA %01001000
++STA 05DE
++LDA %00000100
++STA 05DE
+
+int IOREADOUT = $00;
+routine IOREAD {
+  +LDA $05DF
+  IOREADOUT = A*;
+}
+
+# This is technically the output function, but uh idk how to output things yet so imma just send the output to 05E0
+int IOWRITEIN = $00;
+routine IOWRITE {
+  A* IOWRITEIN
+  +STA 05E0
+}

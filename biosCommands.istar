@@ -1,0 +1,9 @@
+int BIOSOutputRoutineCharacterCounterCommandUnknown = 0;
+routine BIOSOutputRoutineCommandUnknown {
+  if BIOSOutputRoutineCharacterCounterCommandUnknown < BIOSOutputRoutineCharacterCounter {
+    IOWRITEIN = BIOSOutputCommandUnknown[BIOSOutputRoutineCharacterCounterCommandUnknown];
+    call IOWRITE;
+    BIOSOutputRoutineCharacterCounterCommandUnknown + 1;
+    call BIOSOutputRoutineCommandUnknown;
+  }
+}
